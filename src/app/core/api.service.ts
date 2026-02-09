@@ -94,8 +94,8 @@ registerSlots(payload: any) {
   return this.http.post(`${API}/owner/slots/batch`, payload);
 }
 
-createSalon(payload: any) {
-  return this.http.post(`${API}/public/salons`, payload);
+createSalon(req: Partial<Salon>) {
+  return this.http.post<Salon>(`${API}/public/salons`, req);
 }
 
 services(salonId: number) {

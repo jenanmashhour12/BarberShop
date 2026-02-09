@@ -1,0 +1,131 @@
+<div class="page">
+  <header class="page-header">
+
+    <div class="services-left">
+      <h2>Services</h2>
+      <a (click)="openAddModal()" class="btn">+ Add Service</a>
+    </div>
+
+    <select [(ngModel)]="salonId" (change)="onSalonChange()">
+      <option *ngFor="let salon of salons" [value]="salon.id">
+        {{ salon.salonName }}
+      </option>
+    </select>
+
+  </header>
+
+  <!-- ================= SERVICES ================= -->
+
+  <div class="service-cards">
+    <div class="card" *ngFor="let s of services">
+
+      <div class="card-body">
+        <h3 class="card-title">{{ s.serviceName }}</h3>
+        <p class="card-desc">{{ s.description }}</p>
+        <p class="card-price">{{ s.price | currency:'USD' }}</p>
+        <p class="card-duration">{{ s.defaultDuration }} min</p>
+      </div>
+
+      <div class="card-footer">
+        <button class="btn edit" (click)="openEditModal(s)">✏️</button>
+        <button class="btn delete" (click)="deleteService(s.id)">🗑️</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= EDIT MODAL ================= -->
+
+  <div class="modal" *ngIf="editingService">
+    <div class="modal-content">
+      <h2>Edit Service</h2>
+
+      <form (ngSubmit)="saveEdit()">
+
+        <label>Service Name</label>
+        <input type="text"
+               [(ngModel)]="editingService.serviceName"
+               name="serviceName"
+               required />
+
+        <label>Description</label>
+        <textarea [(ngModel)]="editingService.description"
+                  name="description"></textarea>
+
+        <label>Price</label>
+        <input type="number"
+               [(ngModel)]="editingService.price"
+               name="price"
+               required />
+
+        <label>Duration (minutes)</label>
+        <input type="number"
+               [(ngModel)]="editingService.defaultDuration"
+               name="defaultDuration"
+               required />
+
+        <div class="modal-actions">
+          <button type="submit" class="btn save"> Save</button>
+          <button type="button" class="btn cancel"
+                  (click)="closeEditModal()">Cancel</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= DELETE CONFIRM ================= -->
+
+  <div class="modal" *ngIf="serviceToDelete">
+    <div class="modal-content delete-modal">
+      <h3>Confirm Deletion</h3>
+      <p>Are you sure you want to delete this service?</p>
+
+      <div class="modal-actions">
+        <button class="btn delete" (click)="confirmDelete()">Yes, Delete</button>
+        <button class="btn cancel" (click)="cancelDelete()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= ADD SERVICE ================= -->
+
+  <div class="modal" *ngIf="newService">
+    <div class="modal-content">
+      <h2>Add New Service</h2>
+
+      <form (ngSubmit)="saveNewService()">
+
+        <label>Service Name</label>
+        <input type="text"
+               [(ngModel)]="newService.serviceName"
+               name="newServiceName"
+               required />
+
+        <label>Description</label>
+        <textarea [(ngModel)]="newService.description"
+                  name="newDescription"></textarea>
+
+        <label>Price</label>
+        <input type="number"
+               [(ngModel)]="newService.price"
+               name="newPrice"
+               required />
+
+        <label>Duration (minutes)</label>
+        <input type="number"
+               [(ngModel)]="newService.defaultDuration"
+               name="newDuration"
+               required />
+
+        <div class="modal-actions">
+          <button type="submit" class="btn save">+ Add</button>
+          <button type="button" class="btn cancel"
+                  (click)="closeAddModal()">Cancel</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+</div>

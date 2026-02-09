@@ -1,0 +1,37 @@
+<div class="page">
+  <header class="page-header">
+    <h2>Create Service</h2>
+  </header>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" class="card" novalidate>
+    <div class="field">
+      <label>Service Name <span class="req">*</span></label>
+      <input type="text" formControlName="serviceName" placeholder="Haircut" />
+    </div>
+
+    <div class="field">
+      <label>Description</label>
+      <textarea rows="3" formControlName="description" placeholder="Short haircut with styling"></textarea>
+    </div>
+
+    <div class="field">
+      <label>Price ($)</label>
+      <input type="number" formControlName="price" placeholder="50" />
+    </div>
+
+    <div class="field">
+      <label>Default Duration (minutes)</label>
+      <input type="number" formControlName="defaultDuration" placeholder="30" />
+    </div>
+
+    <div class="field">
+      <label>Image URL</label>
+      <input type="text" formControlName="imageUrl" placeholder="https://example.com/image.jpg" />
+    </div>
+
+    <button class="btn" type="submit" [disabled]="submitting">
+      {{ submitting ? 'Saving…' : 'Save Service' }}
+    </button>
+    <p class="msg" *ngIf="message">{{ message }}</p>
+  </form>
+</div>

@@ -1,0 +1,124 @@
+.page { 
+  max-width: 920px; 
+  margin: 24px auto; 
+  padding: 0 16px; 
+}
+
+.page-header {
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center;
+  margin-bottom: 16px;
+  
+    h2 {
+     margin: 0; 
+     font-weight: 700; 
+     color: #2F3D3A; 
+     text-align: center;
+     width: 100%; 
+     font-size: clamp(1.4rem, 1.1rem + 1.2vw, 2rem);
+    }
+
+  .link { 
+    text-decoration: none; 
+    color: #3b82f6; 
+    margin-left: auto; }
+   }
+
+.card { 
+    background: #7F9B95; 
+    padding: 16px; 
+    border-radius: 12px;
+}
+
+.field {
+     display: grid; 
+     gap: 6px; 
+     margin-bottom: 12px; 
+}
+
+label { 
+    font-weight: 600; 
+    color: #fff; 
+}
+
+.req { 
+    color: #D97757;
+} 
+
+.err { 
+    color: #D97757; 
+    font-size: 12px; 
+}
+
+.muted { 
+    color: #6b7280; 
+    font-size: 12px; 
+}
+
+.grid {
+  display: grid; 
+  gap: 12px;
+  grid-template-columns: repeat(3, minmax(140px, 1fr));
+}
+
+
+.days {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(90px, 1fr));
+  gap: 8px 10px;
+  align-items: center;
+}
+
+.days label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  border: 1px solid rgba(235, 231, 231, 0.06);
+  border-radius: 999px;
+  padding: 8px 12px;
+}
+
+
+@media (max-width: 1024px) {
+  .days { grid-template-columns: repeat(4, 1fr); }
+}
+@media (max-width: 640px) {
+  .days { grid-template-columns: repeat(2, 1fr); }
+}
+
+select, input[type="time"], input[type="text"] {
+  width: 100%; 
+  border: 1px solid #fff; 
+  background: #EEEFE0; 
+  color: #1f2937;
+  border-radius: 8px; 
+  padding: 10px 12px; 
+  outline: none;
+}
+
+select:focus, input:focus { 
+    border-color: #3b82f6; 
+}
+
+.btn {
+  padding: 10px 16px; 
+  border: none; 
+  border-radius: 8px; 
+  cursor: pointer;
+  background: #D1D8BE; 
+  color: #1f2937; 
+  font-weight: 700;
+}
+
+.btn:disabled { 
+    opacity: .65; 
+    cursor: default; 
+}
+
+.msg { 
+    margin-top: 10px; 
+    opacity: .9; color: #1f2937; 
+}
+

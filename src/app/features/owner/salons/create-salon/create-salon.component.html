@@ -1,0 +1,44 @@
+<div class="create-salon-page">
+<header class="page-header">
+  <h2>CREATE SALON</h2>
+</header>
+
+<form [formGroup]="form" (ngSubmit)="submit()" novalidate class="card">
+
+  <div class="field">
+    <label>Salon Name <span class="req">*</span></label>
+    <input type="text" formControlName="salonName" placeholder="Enter Salon's Name" />
+
+    <small class="err"
+      *ngIf="f['salonName'].touched && f['salonName'].invalid">
+      Salon name is required
+    </small>
+  </div>
+
+  <div class="field">
+    <label>Phone <span class="req">*</span></label>
+    <input type="text" formControlName="phone" placeholder="+97059xxxxxxx" />
+
+    <small class="err"
+      *ngIf="f['phone'].touched && f['phone'].invalid">
+      Must be a valid phone number
+    </small>
+  </div>
+
+  <div class="field">
+    <label>Address <span class="req">*</span></label>
+    <textarea rows="3" formControlName="address" placeholder="City – Street"></textarea>
+
+    <small class="err"
+      *ngIf="f['address'].touched && f['address'].invalid">
+      Address is required
+    </small>
+  </div>
+
+  <button class="btn" type="submit" [disabled]="submitting">
+    {{ submitting ? 'Saving…' : 'Save' }}
+  </button>
+
+  <p class="msg" *ngIf="message">{{ message }}</p>
+</form>
+</div>

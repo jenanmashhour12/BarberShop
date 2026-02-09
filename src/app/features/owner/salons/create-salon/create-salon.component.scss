@@ -1,0 +1,158 @@
+.card {
+  max-width: 400px; 
+  margin: 40px auto; 
+  padding: 0 20px; 
+  background: #ffffff; 
+  backdrop-filter: none; 
+  border-radius: 16px;
+  padding: 30px; 
+  color: #2F3D3A; 
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1); /* Lighter shadow */
+  border: none; /* Remove the border */
+  animation: slideUp 0.6s ease-out;
+}
+.center-snackbar {
+  background: linear-gradient(135deg, #4CAF50, #2E7D32);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 16px;
+  padding: 16px 24px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+  text-align: center;
+}
+
+.page-header {
+  max-width: 450px; 
+  margin: 40px auto -15px; 
+
+  padding: 0 20px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.6s ease-out;
+}
+
+.page-header h2 {
+  margin: 0;
+  font-weight: 700;
+  color: #2F3D3A; /* Darker color for better contrast on the light background */
+  letter-spacing: 1px;
+  font-size: clamp(1.6rem, 1.2rem + 1.8vw, 2.6rem);
+  text-transform: uppercase;
+  position: relative;
+}
+
+label {
+    font-weight: 600;
+    letter-spacing: .5px;
+    color: #2F3D3A; 
+}
+
+input,
+textarea {
+    border: 1px solid #ccc; /* Lighter border */
+    background: #fcfcfc; /* White background for input */
+    color: #2F3D3A; /* Dark text in input */
+    /* ... (rest of input styles remain the same) ... */
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: #999;
+}
+/* ... (Keep the rest of your original CSS code for .field, .btn, etc.) ... */
+
+input:focus,
+textarea:focus {
+  border-color: #b6895b;
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.field textarea {
+  height: 30px;
+  min-height: 20px;
+  resize: none;
+}
+:host {
+  display: block;
+}
+
+
+.create-salon-page {
+  background: transparent;
+  padding: 0;
+}
+
+
+:host ::ng-deep .content {
+  background: transparent !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  max-width: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 16px 0;
+}
+
+
+.btn {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  background: #2F3D3A;
+  color: #fff;
+  font-weight: 700;
+  font-size: 15px;
+  width: 100%;
+  transition: 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: .8px;
+  box-shadow: 0px 6px 18px rgba(0,0,0,0.25);
+}
+
+.btn:hover {
+  background: #C4DDD1;
+  transform: translateY(-2px);
+}
+
+.btn:disabled {
+  opacity: .5;
+  cursor: default;
+  transform: none;
+}
+
+.link {
+  color: #c7d6cf;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.link:hover {
+  color: #b6895b;
+}
+
+.msg {
+  margin-top: 12px;
+  opacity: .9;
+  color: #000;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(25px); }
+  to { opacity: 1; transform: translateY(0); }
+}

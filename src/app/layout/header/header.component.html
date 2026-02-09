@@ -1,0 +1,54 @@
+<header class="site-header" (click)="closeNotifications()">
+
+  <h1 class="title">Dashboard Overview</h1>
+
+  <div class="header-actions">
+
+    <span class="date-display">{{ currentDate }}</span>
+
+
+    <div class="notif-wrapper" (click)="$event.stopPropagation()">
+
+      <button
+        class="icon-button"
+        aria-label="Notifications"
+        (click)="toggleNotifications($event)">
+        <i class="material-icons">notifications</i>
+
+        <span class="notif-badge" *ngIf="unreadCount > 0">
+          {{ unreadCount }}
+        </span>
+      </button>
+
+      <div class="notif-panel" *ngIf="notificationsOpen">
+
+        <div class="notif-header">
+          <span>Notifications</span>
+          <button (click)="markAllAsRead()">Mark all as read</button>
+        </div>
+
+        <div class="notif-list">
+          <div
+            class="notif-item"
+            *ngFor="let n of notifications"
+            [class.unread]="!n.read">
+
+            <span class="notif-dot" [ngClass]="n.type"></span>
+
+
+            <div class="notif-content">
+              <strong>{{ n.title }}</strong>
+              <p>{{ n.message }}</p>
+              <small>{{ n.time }}</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="notif-footer">
+          <button>View all</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</header>

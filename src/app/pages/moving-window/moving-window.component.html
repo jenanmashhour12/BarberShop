@@ -1,0 +1,263 @@
+<!-- ========================= moving-window.component.html ========================= -->
+
+<div class="ar-header">
+  <h2>Active Reservations</h2>
+</div>
+
+<!-- ================= Chair 1 ================= -->
+<div class="ar-row-title">Chair 1</div>
+<div class="ar-carousel-container">
+  <button class="ar-arrow left" (click)="scrollLeft()" aria-label="Previous"></button>
+
+  <div class="ar-carousel" #carousel>
+    <!-- If empty -->
+    <button
+      *ngIf="chair1Reservations.length === 0"
+      class="ar-card ar-plus-card ar-plus-empty"
+      type="button"
+      (click)="openQuickAdd('Chair 1', 0)">
+      <div class="ar-plus-inner">
+        <span class="ar-plus-icon">+</span>
+        <span class="ar-plus-text">Add first reservation</span>
+      </div>
+    </button>
+
+    <!-- Reservations -->
+    <ng-container *ngFor="let res of chair1Reservations; let i = index">
+      <div
+        class="ar-card ar-card-with-quick ar-clickable"
+        [ngClass]="{ 'ar-active': isActiveInChair(res, chair1Reservations) }"
+        (click)="openEdit(res, 'Chair 1', i)">
+
+        <!-- LEFT quick add -->
+        <button
+          class="ar-quick-add left"
+          type="button"
+          (click)="$event.stopPropagation(); openQuickAdd('Chair 1', i)"
+          aria-label="Quick add before">
+          +
+        </button>
+
+        <!-- CARD CONTENT -->
+        <div class="ar-card-content">
+          <div class="ar-card-header">
+            <span class="ar-name">{{ res.customerName }}</span>
+            <span class="ar-status" [ngClass]="res.status">{{ res.status }}</span>
+          </div>
+
+          <div class="ar-times">{{ getTimeRange(res) }}</div>
+
+          <div class="ar-progress-bar">
+            <div class="ar-progress" [style.width.%]="getProgress(res)"></div>
+          </div>
+        </div>
+
+        <!-- RIGHT quick add -->
+        <button
+          class="ar-quick-add right"
+          type="button"
+          (click)="$event.stopPropagation(); openQuickAdd('Chair 1', i + 1)"
+          aria-label="Quick add after">
+          +
+        </button>
+      </div>
+    </ng-container>
+  </div>
+
+  <button class="ar-arrow right" (click)="scrollRight()" aria-label="Next"></button>
+</div>
+
+<!-- ================= Chair 2 ================= -->
+<!-- ================= Chair 2 ================= -->
+<div class="ar-row-title">Chair 2</div>
+
+<div class="ar-carousel-container">
+
+  <button class="ar-arrow left" (click)="scrollLeft2()" aria-label="Previous"></button>
+
+  <div class="ar-carousel" #carousel2>
+
+    <ng-container *ngFor="let res of chair2Reservations; let i = index">
+
+      <div
+        class="ar-card ar-card-with-quick"
+        [ngClass]="{ 'ar-active': isActiveInChair(res, chair2Reservations) }"
+        (click)="openEdit(res, 'Chair 2', i)">
+
+        <!-- LEFT quick add -->
+        <button
+          class="ar-quick-add left"
+          type="button"
+          (click)="openQuickAdd('Chair 2', i); $event.stopPropagation()">
+          +
+        </button>
+
+        <!-- CARD CONTENT -->
+        <div class="ar-card-content">
+          <div class="ar-card-header">
+            <span class="ar-name">{{ res.customerName }}</span>
+            <span class="ar-status" [ngClass]="res.status">
+              {{ res.status }}
+            </span>
+          </div>
+
+          <div class="ar-times">{{ getTimeRange(res) }}</div>
+
+          <div class="ar-progress-bar">
+            <div
+              class="ar-progress"
+              [style.width.%]="getProgress(res)">
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT quick add -->
+        <button
+          class="ar-quick-add right"
+          type="button"
+          (click)="openQuickAdd('Chair 2', i + 1); $event.stopPropagation()">
+          +
+        </button>
+
+      </div>
+    </ng-container>
+
+  </div>
+
+  <button class="ar-arrow right" (click)="scrollRight2()" aria-label="Next"></button>
+</div>
+
+
+<div class="ar-timeline"></div>
+
+<!-- ================= Quick Add Overlay ================= -->
+<div class="ar-overlay" *ngIf="quickAddOpen" (click)="closeQuickAdd()"></div>
+
+<!-- ================= Quick Add Drawer ================= -->
+<aside
+  class="ar-drawer"
+  *ngIf="quickAddOpen"
+  (click)="$event.stopPropagation()">
+
+  <div class="ar-drawer-header">
+    <h3>Quick Add Reservation</h3>
+    <button
+      class="ar-drawer-close"
+      type="button"
+      (click)="closeQuickAdd()">
+      ×
+    </button>
+  </div>
+
+  <div class="ar-drawer-sub">
+    Insert into <b>{{ quickAddChair }}</b> at position <b>{{ quickAddIndex }}</b>
+  </div>
+
+  <form class="ar-form" (ngSubmit)="submitQuickAdd()">
+    <label>
+      Customer Name
+      <input
+        type="text"
+        [(ngModel)]="quickAddForm.customerName"
+        name="customerName"
+        required />
+    </label>
+
+    <label>
+      Start Time
+      <input
+        type="datetime-local"
+        [(ngModel)]="quickAddForm.startLocal"
+        name="startLocal"
+        required />
+    </label>
+
+    <label>
+      End Time
+      <input
+        type="datetime-local"
+        [(ngModel)]="quickAddForm.endLocal"
+        name="endLocal"
+        required />
+    </label>
+
+    <div class="ar-form-actions">
+      <button
+        type="button"
+        class="ar-btn secondary"
+        (click)="closeQuickAdd()">
+        Cancel
+      </button>
+
+      <button
+        type="submit"
+        class="ar-btn primary">
+        Add
+      </button>
+    </div>
+  </form>
+</aside>
+
+
+<!-- ================= Edit Overlay ================= -->
+<div class="ar-overlay" *ngIf="editOpen" (click)="closeEdit()"></div>
+
+<!-- ================= Edit Drawer ================= -->
+<aside
+  class="ar-drawer"
+  *ngIf="editOpen"
+  (click)="$event.stopPropagation()">
+
+  <div class="ar-drawer-header">
+    <h3>Edit Reservation</h3>
+    <button class="ar-drawer-close" type="button" (click)="closeEdit()">×</button>
+  </div>
+
+  <form class="ar-form" (ngSubmit)="saveEdit()">
+    <label>
+      Customer Name
+      <input
+        type="text"
+        [(ngModel)]="editForm.customerName"
+        name="editCustomerName"
+        required />
+    </label>
+
+    <label>
+      Start Time
+      <input
+        type="datetime-local"
+        [(ngModel)]="editForm.startLocal"
+        name="editStartTime"
+        required />
+    </label>
+
+    <label>
+      End Time
+      <input
+        type="datetime-local"
+        [(ngModel)]="editForm.endLocal"
+        name="editEndTime"
+        required />
+    </label>
+
+    <div class="ar-form-actions">
+      <button type="button" class="ar-btn secondary" (click)="closeEdit()">Cancel</button>
+      <button type="submit" class="ar-btn primary">Save</button>
+    </div>
+    <input type="datetime-local"
+       [(ngModel)]="quickAddForm.startLocal"
+       name="startLocal"
+       [min]="allowedMinLocal"
+       [max]="allowedMaxLocal"
+       required />
+
+<input type="datetime-local"
+       [(ngModel)]="quickAddForm.endLocal"
+       name="endLocal"
+       [min]="allowedMinLocal"
+       [max]="allowedMaxLocal"
+       required />
+
+  </form>
+</aside>

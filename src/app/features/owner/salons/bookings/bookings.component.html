@@ -1,0 +1,202 @@
+<!-- src/app/features/owner/salons/bookings/bookings.component.html -->
+<div class="page">
+  <header class="page-header">
+    <h2>Salon Schedule Manager</h2>
+    <button class="btn-register" (click)="openRegisterModal()" *ngIf="selectedDateStr">
+      + Register Time Slots
+    </button>
+  </header>
+
+  <form class="filters card" [formGroup]="form">
+    <label>
+      <span>Select Salon</span>
+      <select formControlName="salonId" (change)="selectedDateStr && fetchSlots()">
+        <option [ngValue]="null">-- Choose a salon --</option>
+        <option *ngFor="let s of salons" [ngValue]="s.id">{{ s.salonName }}</option>
+      </select>
+    </label>
+  </form>
+
+  <div class="calendar-and-slots">
+    <div class="cal card">
+      <h3>Select Date</h3>
+      <mat-calendar (selectedChange)="onDaySelected($event)"></mat-calendar>
+    </div>
+
+    <div class="slots card">
+      <h3 *ngIf="selectedDateStr">Available Times - {{ selectedDateStr }}</h3>
+      <h3 *ngIf="!selectedDateStr">Select a date to view slots</h3>
+
+      <div class="loading" *ngIf="loading">Loading slots...</div>
+      <div class="message" *ngIf="!loading && message">{{ message }}</div>
+
+      <div class="slots-table" *ngIf="!loading && slots.length > 0">
+        <div class="row head">
+          <div>Time Slot</div>
+          <div>Status</div>
+          <div>Actions</div>
+        </div>
+
+        <div class="row" *ngFor="let slot of slots">
+          <div class="time">{{ slot.startTime }} — {{ slot.endTime }}</div>
+          <div>
+            <span [class]="badgeClass(slot.status)">{{ slot.status }}</span>
+          </div>
+          <div class="actions">
+            <button class="btn-view" *ngIf="slot.status === 'BOOKED'" (click)="openDetails(slot)">
+              View
+            </button>
+            <button class="btn-edit" (click)="openEditModal(slot)">
+              Edit
+            </button>
+            <button class="btn-delete" (click)="deleteSlot(slot)">
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- view booking details -->
+<div class="modal-overlay" *ngIf="selectedSlot" (click)="closeDetails()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Booking Details</h3>
+      <button class="close-btn" (click)="closeDetails()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="detail-row">
+        <span class="label">Customer Name:</span>
+        <span class="value">{{ selectedSlot.customerName || 'N/A' }}</span>
+      </div>
+      <div class="detail-row">
+        <span class="label">Phone Number:</span>
+        <span class="value">{{ selectedSlot.customerPhone || 'N/A' }}</span>
+      </div>
+      <div class="detail-row" *ngIf="selectedSlot.serviceName">
+        <span class="label">Service:</span>
+        <span class="value">{{ selectedSlot.serviceName }}</span>
+      </div>
+      <div class="detail-row" *ngIf="selectedSlot.serviceDescription">
+        <span class="label">Description:</span>
+        <span class="value">{{ selectedSlot.serviceDescription }}</span>
+      </div>
+      <div class="detail-row" *ngIf="selectedSlot.servicePrice">
+        <span class="label">Price:</span>
+        <span class="value price">${{ selectedSlot.servicePrice }}</span>
+      </div>
+      <div class="detail-row">
+        <span class="label">Time:</span>
+        <span class="value">{{ selectedSlot.startTime }} - {{ selectedSlot.endTime }}</span>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" (click)="closeDetails()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- edit slot -->
+<div class="modal-overlay" *ngIf="editingSlot" (click)="closeEditModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Edit Time Slot</h3>
+      <button class="close-btn" (click)="closeEditModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="field">
+        <label>Start Time</label>
+        <input type="time" [(ngModel)]="editingSlot.startTime" />
+      </div>
+      <div class="field">
+        <label>End Time</label>
+        <input type="time" [(ngModel)]="editingSlot.endTime" />
+      </div>
+      <div class="field">
+        <label>Status</label>
+        <select [(ngModel)]="editingSlot.status">
+          <option value="AVAILABLE">Available</option>
+          <option value="BOOKED">Booked</option>
+          <option value="CLOSED">Closed</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" (click)="closeEditModal()">Cancel</button>
+      <button class="btn" (click)="saveEdit()">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- register new slots -->
+<div class="modal-overlay" *ngIf="showRegisterModal" (click)="closeRegisterModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Register Available Time Slots</h3>
+      <button class="close-btn" (click)="closeRegisterModal()">×</button>
+    </div>
+    <form [formGroup]="registerForm" (ngSubmit)="submitRegister()">
+      <div class="modal-body">
+        <p class="info-text">Selected Date: <strong>{{ selectedDateStr }}</strong></p>
+        
+        <div class="field">
+          <label>Start Time <span class="req">*</span></label>
+          <input type="time" formControlName="startTime" />
+        </div>
+        
+        <div class="field">
+          <label>End Time <span class="req">*</span></label>
+          <input type="time" formControlName="endTime" />
+        </div>
+        
+        <div class="field">
+          <label>Slot Duration (minutes) <span class="req">*</span></label>
+          <select formControlName="durationMin">
+            <option [value]="15">15 minutes</option>
+            <option [value]="30">30 minutes</option>
+            <option [value]="45">45 minutes</option>
+            <option [value]="60">60 minutes</option>
+          </select>
+        </div>
+        
+        <p class="hint">
+          Time slots will be automatically created from start to end time based on the duration.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" (click)="closeRegisterModal()">Cancel</button>
+        <button type="submit" class="btn">Create Slots</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- delete confirmation -->
+<div class="modal-overlay" *ngIf="slotToDelete" (click)="cancelDelete()">
+  <div class="modal-content delete-confirm" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>⚠️ Confirm Deletion</h3>
+      <button class="close-btn" (click)="cancelDelete()">×</button>
+    </div>
+    <div class="modal-body">
+      <p class="warning-text">Are you sure you want to delete this time slot?</p>
+      <div class="slot-info">
+        <div class="info-row">
+          <span class="label">Time:</span>
+          <span class="value">{{ slotToDelete.startTime }} — {{ slotToDelete.endTime }}</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Status:</span>
+          <span [class]="badgeClass(slotToDelete.status)">{{ slotToDelete.status }}</span>
+        </div>
+      </div>
+      <p class="danger-note">⚠️ This action cannot be undone.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" (click)="cancelDelete()">Cancel</button>
+      <button class="btn-danger" (click)="confirmDelete()">Yes, Delete</button>
+    </div>
+  </div>
+</div>

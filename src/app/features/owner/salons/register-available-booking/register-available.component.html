@@ -1,0 +1,57 @@
+<div class="page">
+  <header class="page-header">
+    <h2>Register Available Booking</h2>
+  </header>
+
+<form [formGroup]="form" (ngSubmit)="submit()" class="card" novalidate>
+  
+  <div class="field">
+    <label>Salon <span class="req">*</span></label>
+    <select formControlName="salonId">
+      <option [ngValue]="null">— Choose a salon —</option>
+      <option *ngFor="let s of salons" [ngValue]="s.id">{{ s.salonName }}</option>
+    </select>
+
+    <small class="err" *ngIf="f['salonId'].touched && f['salonId'].invalid">
+      Required.
+    </small>
+  </div>
+
+    
+    <div class="grid">
+      <div class="field">
+        <label>Start time <span class="req">*</span></label>
+        <input type="time" formControlName="startTime">
+      </div>
+
+      <div class="field">
+        <label>End time <span class="req">*</span></label>
+        <input type="time" formControlName="endTime">
+      </div>
+
+      <div class="field">
+        <label>Slot duration (minutes)</label>
+        <select formControlName="durationMin">
+          <option [value]="15">15</option>
+          <option [value]="30">30</option>
+          <option [value]="45">45</option>
+          <option [value]="60">60</option>
+        </select>
+      </div>
+    </div>
+
+    
+  <div class="field">
+    <label>Apply to days</label>
+    <div class="days" formArrayName="days">
+      <label *ngFor="let d of days; index as i">
+        <input type="checkbox" [formControlName]="i" />
+        <span>{{ d }}</span>
+      </label>
+    </div>
+    <small class="hint">Pick one or more days; slots will be created for each day.</small>
+  </div>
+
+  <button class="btn" type="submit">Create slots</button>
+
+</form>

@@ -1,0 +1,90 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: "Poppins", Roboto, "Helvetica Neue", sans-serif;
+    background: url("assets/barbersalon.jpg") center/cover no-repeat fixed;
+    color: #ffffff;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(2px);
+    z-index: -1;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+.layout {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.content {
+    flex: 1;
+    padding: 40px;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(8px);
+    border-radius: 20px;
+    margin: 30px auto;
+    width: 90%;
+    max-width: 1100px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+h1,
+h2,
+h3 {
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-top: 0;
+    color: #f2f2f2;
+}
+
+p,
+span,
+label,
+a {
+    font-size: 14px;
+    color: #e8e8e8;
+}
+
+button {
+    background: #b6895b;
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #d4a574;
+    transform: translateY(-2px);
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+    background: #b6895b;
+    border-radius: 10px;
+}

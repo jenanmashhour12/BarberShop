@@ -1,0 +1,88 @@
+<div class="app-layout" [class.menu-open]="!isCollapsed">
+
+  <aside class="sidebar" [class.is-collapsed]="isCollapsed">
+    <div class="logo">
+      <img src="assets/iconn.png" alt="Logo" />
+      
+      <button class="toggle-button" (click)="toggleSidebar()">
+        <i class="material-icons">{{ isCollapsed ? 'arrow_forward_ios' : 'arrow_back_ios' }} </i>
+      </button>
+    </div>
+    
+    <div class="menu-wrapper"> 
+        <nav class="menu">
+            <a routerLink="create" routerLinkActive="active" class="menu-item">
+                <i class="material-icons">store</i>
+                <span class="nav-text">Create a New Salon</span>
+            </a>
+
+            <a routerLink="bookings" routerLinkActive="active" class="menu-item">
+                <i class="material-icons">calendar_today</i>
+                <span class="nav-text">View current bookings</span>
+            </a>
+
+            <a routerLink="services" routerLinkActive="active" class="menu-item">
+                <i class="material-icons">content_cut</i>
+                <span class="nav-text">Manage Services</span>
+            </a>
+
+            <a routerLink="statistics" routerLinkActive="active" class="menu-item">
+                <i class="material-icons">leaderboard</i>
+                <span class="nav-text">View Statistics</span>
+            </a>
+                    <a routerLink="active-reservations" routerLinkActive="active" class="menu-item">
+                <i class="material-icons">notifications_active</i>
+                <span class="nav-text">Active Reservations</span>
+            </a>
+        </nav>
+    </div>
+
+    <!-- 🌟 Mini Active Reservations Widget -->
+    <div class="mini-active-res-widget">
+      <div class="mini-ar-header">
+        <i class="material-icons mini-ar-ico">notifications_active</i>
+        <span>Active Reservations</span>
+        <span class="mini-ar-count" *ngIf="miniActiveReservations.length">{{ miniActiveReservations.length }}</span>
+        <span *ngIf="miniActiveReservations.length===0">No active</span>
+      </div>
+      <ul *ngIf="miniActiveReservations.length">
+        <li *ngFor="let res of miniActiveReservations.slice(0,2)">
+          <span class="mini-ar-dot" [ngClass]="res.status"></span> {{ res.customerName }}
+        </li>
+      </ul>
+      <a routerLink="active-reservations" class="mini-ar-link-all" *ngIf="miniActiveReservations.length>2">
+        See All
+      </a>
+    </div>
+    <div class="user-profile">
+      <div class="profile-info">
+        <i class="material-icons profile-icon">person</i>
+        <div class="nav-text">
+          <p class="user-name">Jenan Mohammad</p>
+          <a href="mailto:jenanmohammad2003@gmail.com" class="user-email">jenanmohammad2003&#64;gmail.com</a>
+        </div>
+      </div>
+      
+      <a class="logout-link" (click)="logout()">
+        <i class="material-icons">logout</i>
+        <span class="nav-text">Logout</span>
+      </a>
+    </div>
+    
+  </aside>
+
+
+  <div class="main-area">
+    <button class="mobile-menu-toggle" (click)="toggleSidebar()">
+      <i class="material-icons">menu</i>
+    </button>
+    
+    <app-header></app-header>
+
+    <main class="content">
+      <router-outlet></router-outlet>
+    </main>
+
+    <app-footer></app-footer>
+  </div>
+</div>

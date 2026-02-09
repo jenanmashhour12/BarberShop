@@ -1,0 +1,93 @@
+<!-- src/app/features/owner/salons/statistics/statistics.component.html -->
+<div class="page">
+  <header class="page-header">
+    <h2>Booking Statistics</h2>
+  </header>
+
+  
+  <form class="filters card" [formGroup]="form">
+    <div class="filter-row">
+      <div class="field">
+        <label>Select Salon</label>
+        <select formControlName="salonId" (change)="onFilterChange()">
+          <option [ngValue]="null">-- Choose a salon --</option>
+          <option *ngFor="let s of salons" [ngValue]="s.id">{{ s.salonName }}</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Start Date</label>
+        <input type="date" formControlName="startDate" (change)="onFilterChange()" />
+      </div>
+
+      <div class="field">
+        <label>End Date</label>
+        <input type="date" formControlName="endDate" (change)="onFilterChange()" />
+      </div>
+    </div>
+
+    <div class="quick-filters">
+      <button type="button" class="quick-btn" (click)="setDateRange('today')">Today</button>
+      <button type="button" class="quick-btn" (click)="setDateRange('week')">Last 7 Days</button>
+      <button type="button" class="quick-btn" (click)="setDateRange('month')">Last 30 Days</button>
+    </div>
+  </form>
+
+  
+  <div class="loading" *ngIf="loading">Loading statistics...</div>
+  <div class="message" *ngIf="!loading && message">{{ message }}</div>
+
+  
+  <div class="stats-grid" *ngIf="!loading && statistics">
+    <!-- daily bookings -->
+    <div class="stat-card daily">
+      <div class="icon">📅</div>
+      <div class="content">
+        <div class="label">Daily Bookings</div>
+        <div class="value">{{ statistics.dailyBookings }}</div>
+      </div>
+    </div>
+
+    <!-- weekly bookings -->
+    <div class="stat-card weekly">
+      <div class="icon">📊</div>
+      <div class="content">
+        <div class="label">Weekly Bookings</div>
+        <div class="value">{{ statistics.weeklyBookings }}</div>
+      </div>
+    </div>
+
+    <!-- monthly bookings -->
+    <div class="stat-card monthly">
+      <div class="icon">📈</div>
+      <div class="content">
+        <div class="label">Monthly Bookings</div>
+        <div class="value">{{ statistics.monthlyBookings }}</div>
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="popular-times card" *ngIf="!loading && statistics && statistics.mostRequestedTimes.length > 0">
+    <h3>Most Requested Time Slots</h3>
+    <div class="times-list">
+      <div class="time-item" *ngFor="let time of statistics.mostRequestedTimes; let i = index">
+        <div class="rank">{{ i + 1 }}</div>
+        <div class="time-info">
+          <div class="time-slot">{{ time.timeSlot }}</div>
+          <div class="bar-container">
+            <div class="bar" [style.width.%]="(time.count / statistics.mostRequestedTimes[0].count) * 100"></div>
+          </div>
+        </div>
+        <div class="count">{{ time.count }} bookings</div>
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="no-data card" *ngIf="!loading && statistics && statistics.mostRequestedTimes.length === 0">
+    <div class="icon">📭</div>
+    <h3>No Bookings Found</h3>
+    <p>There are no bookings for the selected period.</p>
+  </div>
+</div>

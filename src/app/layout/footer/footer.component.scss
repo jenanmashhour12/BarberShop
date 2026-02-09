@@ -1,0 +1,62 @@
+.site-footer {
+  background: #2F3D3A;
+  color: ghostwhite; 
+  border-top: 3px solid #D1D8BE; 
+  padding: 20px 20px;
+  font-size: 0.95rem;
+}
+
+.site-footer .container {
+  
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-align: center;
+  
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+@media (min-width: 500px) {
+  .site-footer .container {
+    flex-direction: row; /* Layout horizontally on larger screens */
+    justify-content: space-between; /* Space out the brand, info, and copy sections */
+    text-align: left;
+  }
+}
+
+.site-footer .brand {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #2F3D3A;
+  text-decoration: none;
+  margin-bottom: 10px;
+}
+
+.site-footer .info {
+  font-style: normal; 
+  line-height: 1.5;
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+.site-footer .info strong {
+  font-weight: 600;
+}
+
+.site-footer .info a {
+  color: #819A91; 
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.site-footer .info a:hover {
+  color: #2F3D3A; 
+  text-decoration: underline;
+}
+
+.site-footer .copy {
+  margin-top: 10px; 
+  opacity: 0.7;
+  font-size: 0.85rem;
+}
